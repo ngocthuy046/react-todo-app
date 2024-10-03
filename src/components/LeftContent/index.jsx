@@ -3,12 +3,8 @@ import React from "react";
 export const LeftContent = () => {
     return (
         <div className="left-content">
-            <div className="frame">
-                <div className="group-2">
-                    <h1 className="title"> Todo App</h1>
-                    <p className="manage-your-work"> Manage your work every day</p>
-                </div>
-            </div>
+            <h1 class="text-5xl font-extrabold dark:text-white"> Todo App</h1>
+            <p class="text-lg font-normal lg:text-xl dark:text-white mt-1000"> Manage your work every day</p>
         </div>
     )
 }

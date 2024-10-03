@@ -15,7 +15,11 @@ export function userReducer(state = initialState, action) {
                 ...state,
                 user: action.user
             }
-
+        case userConstants.LOGOUT:
+            return {
+                ...state,
+                user: null
+            }
         default:
             return state
     }

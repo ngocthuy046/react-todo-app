@@ -1,130 +1,128 @@
 import React, { useState } from "react";
-// import { useDispatch } from "react-redux";
-// import InputField from "../../components/InputField";
-import FormTitle from "../../components/FormTitle";
+import { useDispatch, useSelector } from "react-redux";
+import { RegisterUser } from "../../redux/actions/user.action";
 import { LeftContent } from "../../components/LeftContent";
 
-export default function Register() {
+function RegisterForm() {
+    const dispatch = useDispatch();
+
     const [user_name, setUserName] = useState('')
     const [user_email, setUserEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirm_password, setConfirmPassword] = useState('')
 
-    // const dispatch = useDispatch();
+    async function handleSubmit(event) {
+        event.preventDefault();
 
-    const handleSubmit = (event) => {
         function generateRandomId() {
             return Math.random().toString(36).substr(2, 9);
         }
-        event.preventDefault();
+        const user_id = generateRandomId();
+
         if (!user_name || !user_email || !password || !confirm_password) {
             alert("Please fill all the fields");
             return;
         }
 
         if (password !== confirm_password) {
-            alert("Password and confirm password not match");
+            alert("Password does not match");
             return;
         }
 
-        const id = generateRandomId();
-        let users = JSON.parse(localStorage.getItem("users")) || [];
-        users.push({
-            id,
+        const newUser = {
+            user_id,
             user_name,
             user_email,
             password
-        })
-        localStorage.setItem("users", JSON.stringify(users));
-        console.log(users)
+        }
 
+        let users = JSON.parse(localStorage.getItem("users")) || [];
+        users.push(newUser);
+        localStorage.setItem("users", JSON.stringify(users));
+        dispatch(RegisterUser(newUser));
+
+        console.log(users)
         alert("Registration Successful");
-        setUserName('')
-        setUserEmail('')
-        setPassword('')
-        setConfirmPassword('')
-        
+
     }
-    // const dispatch = useDispatch();
+    return (
+        <form className="form" onSubmit={handleSubmit}>
+            <div>
+                <div className="form-title">
+                    <h1 class="text-3xl font-extrabold dark:text-white">
+                        Hello!
+                    </h1>
+                    <p className="p">Sign Up to Get Started</p>
+                </div>
+                <div class="mb-5">
+                    <label for="user-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Full name</label>
+                    <input
+                        type="text"
+                        id="user-name"
+                        placeholder="Enter your name"
+                        value={user_name}
+                        onChange={(e) => setUserName(e.target.value)}
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                        required
+                    />
+                </div>
+                <div class="mb-5">
+                    <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="name@example.com"
+                        value={user_email}
+                        onChange={(e) => setUserEmail(e.target.value)}
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                        required
+                    />
+                </div>
+                <div class="mb-5">
+                    <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your password</label>
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="At least 4 characters"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                        required
+                    />
+                </div>
+                <div class="mb-5">
+                    <label for="repeat-password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Repeat password</label>
+                    <input
+                        type="password"
+                        id="repeat-password"
+                        placeholder="Repeat your password"
+                        value={confirm_password}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                        required
+                    />
+                </div>
+
+                <div class="form-actions">
+                    <div class="flex items-start mb-5">
+                        <div class="flex items-center h-5">
+                            <input id="login-page" type="checkbox" value="" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800" required />
+                        </div>
+                        <label for="login-page" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Already have an account? <a href="#" class="text-blue-600 hover:underline dark:text-blue-500">Login here</a></label>
+                    </div>
+                    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Register new account</button>
+                </div>
+
+            </div>
+        </form>
+    );
+};
+
+export default function RegisterPage() {
     return (
         <div className="register">
             <LeftContent />
-            <form className="form" onSubmit={handleSubmit}>
-                <FormTitle titleMessage="Register" />
-                <div className="form-field" >
-                    <div className="input-field">
-                        <label className="label">Full Name</label>
-                        <input 
-                            className="input-content" 
-                            type="text" 
-                            placeholder="Enter your Name" 
-                            value={user_name} 
-                            onChange={(event) => setUserName(event.target.value)} 
-                        />
-                    </div>
-                    <div className="input-field">
-                        <label className="label">Email</label>
-                        <input 
-                            className="input-content" 
-                            type="email" 
-                            placeholder="Enter your Email" 
-                            value={user_email} 
-                            onChange={(event) => setUserEmail(event.target.value)} 
-                        />
-                    </div>
-                    <div className="input-field">
-                        <label className="label">Password</label>
-                        <input 
-                            className="input-content" 
-                            type="password" 
-                            placeholder="At least 4 characters" 
-                            value={password} 
-                            onChange={(event) => setPassword(event.target.value)} 
-                        />
-                    </div>
-                    <div className="input-field">
-                        <label className="label">Confirm Password</label>
-                        <input 
-                            className="input-content" 
-                            type="password" 
-                            placeholder="Repeat Password" 
-                            value={confirm_password} 
-                            onChange={(event) => setConfirmPassword(event.target.value)} 
-                        />
-                    </div>
-                    {/* <InputField
-                        inputType="user_name"
-                        id="user-name"
-                        name="user_name"
-                        value={user_name}
-                        onChange={handleChange}
-                    />
-                    <InputField
-                        inputType="user_email"
-                        id="user-email"
-                        name="user-email"
-                    />
-                    <InputField
-                        inputType="password"
-                        id="password"
-                        name="password"
-                    />
-                    <InputField
-                        inputType="confirm_password"
-                        id="confirm-password"
-                        name="confirm-password"
-                    /> */}
-                </div>
-                <div className="form-bottom-container">
-                    <div >
-                        <p className="internal-link-text">
-                            Already have an account?
-                            <a href="/login" className="button__link">Login here</a>
-                        </p>
-                    </div>
-                    <button className="button">Register</button>
-                </div>
-            </form>
+            <RegisterForm />
         </div>
     );
-};
+}
