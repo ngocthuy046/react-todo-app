@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { LoginUser } from "../../redux/actions/user.action";
-// import { userActions } from "../../redux/actions/user.action";
 
 import { LeftContent } from "../../components/LeftContent";
 
-export function Login() {
+function LoginForm() {
     const user = useSelector((state) => state.user.user);
     const dispatch = useDispatch();
     const [user_email, setUserEmail] = useState('')
@@ -35,48 +34,59 @@ export function Login() {
     }
 
     return (
-        <div className="login">
-            <LeftContent />
-            <form className="form" onSubmit={handleSubmit}>
-                <div className="title">
-                    <h2 className="welcome-message__title">Welcome back!</h2>
-                    <p className="p">Login to Get Started</p>
+        <form className="form" onSubmit={handleSubmit}>
+            <div>
+                <div className="form-title">
+                    <h1 class="text-3xl font-extrabold dark:text-white">
+                        Hello!
+                    </h1>
+                    <p className="p">Sign Up to Get Started</p>
                 </div>
-                <div className="form-field">
-                    <div className="input-field">
-                        <label className="label">Email</label>
-                        <input
-                            className="input-content"
-                            type="email"
-                            placeholder="Enter your Email"
-                            value={user_email}
-                            onChange={(event) => setUserEmail(event.target.value)}
-                        />
-                    </div>
-                    <div className="input-field">
-                        <label className="label">Password</label>
-                        <input
-                            className="input-content"
-                            type="password"
-                            placeholder="At least 4 characters"
-                            value={password}
-                            onChange={(event) => setPassword(event.target.value)}
-                        />
-                    </div>
+                <div class="mb-5">
+                    <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="name@example.com"
+                        value={user_email}
+                        onChange={(e) => setUserEmail(e.target.value)}
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                        required
+                    />
                 </div>
-                <div className="form-bottom">
-                    <div >
-                        <p className="internal-link-text">
-                            Already have an account?
-                            <a href="/login" className="button__link">Login here</a>
-                        </p>
-                    </div>
-                    <button
-                        className="button"
-                        type="submit"
-                    >Login</button>
+                <div class="mb-5">
+                    <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your password</label>
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="At least 4 characters"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                        required
+                    />
                 </div>
-            </form>
-        </div>
+
+                <div class="form-actions">
+                    <div class="flex items-start mb-5">
+                        <div class="flex items-center h-5">
+                            <input id="login-page" type="checkbox" value="" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800" required />
+                        </div>
+                        <label for="login-page" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Already have an account? <a href="#" class="text-blue-600 hover:underline dark:text-blue-500">Login here</a></label>
+                    </div>
+                    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Register new account</button>
+                </div>
+
+            </div>
+        </form>
     );
 };
+
+export default function LoginPage() {
+    return (
+        <div className="login">
+            <LeftContent />
+            <LoginForm />
+        </div>
+    );
+}
